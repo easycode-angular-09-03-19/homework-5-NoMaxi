@@ -1,0 +1,6 @@
+<ng-container *ngIf="isVisible">
+    <h4 class="text-center">System message</h4>
+    <div class="alert-message position-fixed p-2">
+        <p class="message-text alert alert-{{ alertClass }} align-middle text-center">{{ alertMessageText }}</p>
+    </div>
+</ng-container>

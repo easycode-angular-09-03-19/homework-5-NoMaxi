@@ -1,0 +1,15 @@
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">User id: {{ item.id }}</h5>
+        <p class="card-text">Title: {{ item.title }}</p>
+        <button class="btn btn-{{ isBeingEdited ? 'danger' : 'primary' }}"
+            (click)="onEditItemToggleClick()">
+            {{ isBeingEdited ? 'Cancel' : 'Edit' }}
+        </button>
+        <button (click)="onDeleteItemClick()"
+                class="btn btn-warning ml-2"
+                [disabled]="isBeingEdited">
+            Delete
+        </button>
+    </div>
+</div>

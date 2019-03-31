@@ -1,0 +1,32 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col col-8 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Add new album</h5>
+                    <form #addAlbumForm="ngForm" (ngSubmit)="onFormSubmit()">
+                        <div *ngIf="albumTitle.invalid && albumTitle.dirty"
+                             class="alert alert-danger">
+                            Error message
+                        </div>
+
+                        <input type="text"
+                               class="form-control"
+                               maxlength="100"
+                               minlength="2"
+                               name="title"
+                               placeholder="Album title"
+                               #albumTitle="ngModel"
+                               [(ngModel)]="album.title"
+                               required
+                        >
+                        <button [disabled]="albumTitle.invalid"
+                                class="btn btn-success mt-3">
+                            {{ isBeingEdited ? 'Save' : 'Submit' }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

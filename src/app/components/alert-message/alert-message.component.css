@@ -1,0 +1,12 @@
+.alert-message {
+    font-family: Roboto, sans-serif;
+    font-size: 16px;
+    min-height: 80px;
+    width: 400px;
+    right: 15px;
+    top: 15px;
+}
+
+.message-text {
+    word-wrap: break-word;
+}
