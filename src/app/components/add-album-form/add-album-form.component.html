@@ -3,7 +3,9 @@
         <div class="col col-8 mx-auto">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Add new album</h5>
+                    <h5 class="card-title">
+                        {{ isBeingEdited ? 'Edit album' : 'Add new album' }}
+                    </h5>
                     <form #addAlbumForm="ngForm" (ngSubmit)="onFormSubmit()">
                         <div *ngIf="albumTitle.invalid && albumTitle.dirty"
                              class="alert alert-danger">

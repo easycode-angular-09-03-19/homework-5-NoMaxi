@@ -20,16 +20,10 @@ export class AlbumsListComponent implements OnInit {
     ngOnInit() {
         this.albumService.getAlbums().subscribe((data: Album[]) => {
             this.albums = data;
-            console.log(data);
-        }, (err) => {
-            console.log(err);
-        }, () => {
-            console.log('complete');
         });
 
         this.albumEvents.albumAddEventObservableSubject.subscribe((data: Album) => {
             if (data.title) {
-                console.log('Added album item:', data);
                 this.albums.unshift(data);
             }
         });
@@ -41,14 +35,12 @@ export class AlbumsListComponent implements OnInit {
             // if the server was not fake and the album id's were assigned correctly
             // the album-item deletion method would also work correctly
             if (albumId > 0) {
-                console.log('Deleted album id:', albumId);
                 this.albums = this.albums.filter((album) => album.id !== albumId);
             }
         });
 
         this.albumEvents.albumEditedEventObservableSubject.subscribe((data: Album) => {
             if (data.title) {
-                console.log('Edited album item', data);
                 this.albums.forEach((album) => {
                     if (album.id === data.id) {
                         album.title = data.title;

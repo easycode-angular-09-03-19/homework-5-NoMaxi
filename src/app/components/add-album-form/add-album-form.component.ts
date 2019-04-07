@@ -13,12 +13,12 @@ import { AlertMessageService } from '../../services/alert-message.service';
 })
 export class AddAlbumFormComponent implements OnInit {
     // default album-item object
-    album = {
+    album: Album = {
         id: 0,
         title: '',
         userId: 0
     };
-    isBeingEdited = false;
+    isBeingEdited: boolean;
 
     @ViewChild('addAlbumForm') form: NgForm;
 
@@ -29,15 +29,14 @@ export class AddAlbumFormComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        // this.isBeingEdited = false;
         this.albumEvents.albumEditEventObservableSubject.subscribe((data: Album) => {
+            this.isBeingEdited = false;
             if (data.id !== 0) {
                 this.isBeingEdited = true;
-                this.album.id = data.id;
-                this.album.title = data.title;
-                this.album.userId = data.userId;
+                this.album = Object.assign({}, data);
                 return;
             }
-
             this.form.resetForm();
         });
     }
@@ -45,17 +44,9 @@ export class AddAlbumFormComponent implements OnInit {
     /** The Event handler that handles the form submitting to the server */
     onFormSubmit() {
         if (this.album.id !== 0) {
-            const editedAlbum = {
-                id: this.album.id,
-                title: this.album.title,
-                userId: this.album.userId
-            };
-
-            this.albumService.editAlbum(editedAlbum).subscribe((data: Album) => {
+            this.albumService.editAlbum({ ...this.album }).subscribe((data: Album) => {
                 this.albumEvents.emitEditedAlbum(data);
                 this.album.id = 0;
-                this.isBeingEdited = false;
-                this.form.resetForm();
 
                 this.alertMessageService.emitRenderAlertMessage({
                     type: 'success',
@@ -63,15 +54,15 @@ export class AddAlbumFormComponent implements OnInit {
                     actionPerformed: 'editAlbum'
                 });
             }, (err) => {
-                this.isBeingEdited = false;
-                this.form.resetForm();
-
                 this.alertMessageService.emitRenderAlertMessage({
                     type: 'error',
                     object: err,
                     actionPerformed: 'editAlbum',
                     errorMessage: err.message
                 });
+            }, () => {
+                this.isBeingEdited = false;
+                this.form.resetForm();
             });
             return;
         }
@@ -84,7 +75,6 @@ export class AddAlbumFormComponent implements OnInit {
 
         this.albumService.addNewAlbum(newAlbum).subscribe((data: Album) => {
             this.albumEvents.emitAddNewAlbum(data);
-            this.form.resetForm();
 
             this.alertMessageService.emitRenderAlertMessage({
                 type: 'success',
@@ -92,14 +82,14 @@ export class AddAlbumFormComponent implements OnInit {
                 actionPerformed: 'addNewAlbum'
             });
         }, (err) => {
-            this.form.resetForm();
-
             this.alertMessageService.emitRenderAlertMessage({
                 type: 'error',
                 object: err,
                 actionPerformed: 'addNewAlbum',
                 errorMessage: err.message
             });
+        }, () => {
+            this.form.resetForm();
         });
     }
 }
